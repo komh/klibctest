@@ -1,0 +1,8 @@
+NAME cwdefault-1 WINDOWAPI
+STACKSIZE 65536
+
+IMPORTS
+    WinInitializeOpen32 = PMWINX.6009
+    WinTerminateOpen32  = PMWINX.6010
+    VirtualAlloc        = PMWINX.1009
+    VirtualFree         = PMWINX.1010
