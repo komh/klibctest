@@ -10,7 +10,7 @@ CXXFLAGS := -Wall
 LDFLAGS  :=
 LDLIBS   :=
 
-TEST_DIRS    := io process misc startup str
+TEST_DIRS    := io process misc startup str network
 TEST_SRCS    := $(foreach dir,$(TEST_DIRS),$(wildcard $(dir)/*.c))
 TEST_DEPS    := $(TEST_SRCS:.c=.d)
 TEST_OBJS    := $(TEST_SRCS:.c=.o)
