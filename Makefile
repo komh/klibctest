@@ -25,7 +25,7 @@ $(1) : $(1:.test=)
 	@d=$$(dir $$<); \
 	n=$$(notdir $$<); \
 	cd $$$$d; \
-	if $$$$n > $$$$n.log 2>&1; then \
+	if ./$$$$n > $$$$n.log 2>&1; then \
 	  echo "PASSED"; \
 	  rm -f $$$$n.log; \
 	else \
