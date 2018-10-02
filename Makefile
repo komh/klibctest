@@ -10,6 +10,8 @@ CXXFLAGS := -Wall
 LDFLAGS  :=
 LDLIBS   :=
 
+TCPIPV4LIBDIR = /lang/gcc/usr/lib/tcpipv4
+
 TEST_DIRS    := io process misc startup str network
 TEST_SRCS    := $(foreach dir,$(TEST_DIRS),$(wildcard $(dir)/*.c))
 TEST_DEPS    := $(TEST_SRCS:.c=.d)
@@ -78,6 +80,8 @@ startup/heapvote.dll : startup/heapvote-1-dll.o
 
 startup/heapvote-1.exe : startup/heapvote.dll
 startup/heapvote-1.exe : LDFLAGS += -Zhigh-mem
+
+network/ioctl-1.exe: LDFLAGS += -L$(TCPIPV4LIBDIR)
 
 clean :
 	rm -f $(TEST_SRCS:.c=.bak)
