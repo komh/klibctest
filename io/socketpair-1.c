@@ -78,7 +78,6 @@ int main( int argc, char *argv[])
 {
     int socksin[ 2 ], socksout[ 2 ];
     int savedin, savedout;
-    int ret;
 
     if( argc > 1 && strcmp( argv[ 1 ], CHILD_MAGIC ) == 0)
         return child();
