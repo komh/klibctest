@@ -5,8 +5,8 @@ SHELL := /bin/sh
 CC       := gcc
 CXX      := g++
 LD       := g++
-CFLAGS   := -Wall
-CXXFLAGS := -Wall
+CFLAGS   := -Wall -DOS2EMX_PLAIN_CHAR
+CXXFLAGS := -Wall -DOS2EMX_PLAIN_CHAR
 LDFLAGS  :=
 LDLIBS   :=
 
