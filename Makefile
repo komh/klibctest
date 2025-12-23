@@ -83,14 +83,22 @@ startup/heapvote-1.exe : LDFLAGS += -Zhigh-mem
 
 network/ioctl-1.exe: LDFLAGS += -L$(TCPIPV4LIBDIR)
 
+misc/wl-1.exe: misc/wl-1.def misc/wl-1-dll.dll
+misc/wl-1.exe: LDFLAGS += -Zomf
+misc/wl-1.exe: EMXOMFLD_TYPE := WLINK
+misc/wl-1.exe: EMXOMFLD_LINKER := wl.exe
+
+misc/wl-1-dll.dll: misc/wl-1-dll.o
+	$(LD) -Zomf -Zdll $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
 clean :
 	rm -f $(TEST_SRCS:.c=.bak)
 	rm -f $(TEST_DEPS)
 	rm -f $(TEST_OBJS)
 	rm -f $(TEST_EXES)
 	rm -f startup/heapvote.dll
+	rm -f misc/wl-1-dll.dll
 
 ifeq ($(filter %clean, $(MAKECMDGOALS)),)
 -include $(TEST_DEPS)
 endif
-
