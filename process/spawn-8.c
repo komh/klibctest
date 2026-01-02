@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <process.h>
 
-#define ABORT_RC 3
+#define ABORT_RC 127
 
 int child( int argc, char *argv[])
 {
