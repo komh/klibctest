@@ -91,6 +91,12 @@ misc/wl-1.exe: EMXOMFLD_LINKER := wl.exe
 misc/wl-1-dll.dll: misc/wl-1-dll.o
 	$(LD) -Zomf -Zdll $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
+misc/dllexport-1.exe: misc/dllexport-1.o misc/dllexp-1.dll
+	-$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+misc/dllexp-1.dll: misc/dllexport-1-dll.o
+	$(LD) -Zdll -s $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
 clean :
 	rm -f $(TEST_SRCS:.c=.bak)
 	rm -f $(TEST_DEPS)
@@ -98,6 +104,7 @@ clean :
 	rm -f $(TEST_EXES)
 	rm -f startup/heapvote.dll
 	rm -f misc/wl-1-dll.dll
+	rm -f misc/dllexp-1.dll
 
 ifeq ($(filter %clean, $(MAKECMDGOALS)),)
 -include $(TEST_DEPS)
