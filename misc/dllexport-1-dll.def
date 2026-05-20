@@ -1,0 +1,3 @@
+library dllexp-1 initinstance terminstance
+exports
+    _dllexport_func

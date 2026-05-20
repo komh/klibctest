@@ -91,11 +91,33 @@ misc/wl-1.exe: EMXOMFLD_LINKER := wl.exe
 misc/wl-1-dll.dll: misc/wl-1-dll.o
 	$(LD) -Zomf -Zdll $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-misc/dllexport-1.exe: misc/dllexport-1.o misc/dllexp-1.dll
-	-$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+DLLEXPORT-1-DLL_O := misc/dllexport-1-dll.o
+DLLEXP-1_DLL := misc/dllexp-1.dll
+DLLEXPORT-1-DLL_DEF := misc/dllexport-1-dll.def
+DLLEXPORT-1_O := misc/dllexport-1.o
+DLLEXPORT-1_EXE := misc/dllexport-1.exe
 
-misc/dllexp-1.dll: misc/dllexport-1-dll.o
-	$(LD) -Zdll -s $(LDFLAGS) -o $@ $^ $(LDLIBS)
+misc/dllexport-1.exe: misc/dllexport-1.o misc/dllexport-1-dll
+	rm -f $(DLLEXPORT-1_EXE); \
+	export GCCOPT=; # export multiply defined by __declspec(dllexport) + .def without -s \
+	$(LD) -Zdll $(LDFLAGS) -o $(DLLEXP-1_DLL) $(DLLEXPORT-1-DLL_O) $(DLLEXPORT-1-DLL_DEF) $(LDLIBS)
+	-$(LD) $(LDFLAGS) -o $(DLLEXPORT-1_EXE) $(DLLEXPORT-1_O) $(DLLEXP-1_DLL) $(LDLIBS)
+	rm -f $(DLLEXPORT-1_EXE); \
+	export GCCOPT=; # export multiply defined by __declspec(dllexport) + .def with -s \
+	$(LD) -Zdll -s $(LDFLAGS) -o $(DLLEXP-1_DLL) $(DLLEXPORT-1-DLL_O)  $(DLLEXPORT-1-DLL_DEF) $(LDLIBS)
+	-$(LD) $(LDFLAGS) -o $(DLLEXPORT-1_EXE) $(DLLEXPORT-1_O) $(DLLEXP-1_DLL) $(LDLIBS)
+	rm -f $(DLLEXPORT-1_EXE); \
+	export GCCOPT=; # __declspec(dllexport) without -s \
+	$(LD) -Zdll $(LDFLAGS) -o $(DLLEXP-1_DLL) $(DLLEXPORT-1-DLL_O) $(LDLIBS)
+	-$(LD) $(LDFLAGS) -o $(DLLEXPORT-1_EXE) $(DLLEXPORT-1_O) $(DLLEXP-1_DLL) $(LDLIBS)
+	rm -f $(DLLEXPORT-1_EXE); \
+	export GCCOPT=; # __declspec(dllexport) with -s \
+	$(LD) -Zdll -s $(LDFLAGS) -o $(DLLEXP-1_DLL) $(DLLEXPORT-1-DLL_O) $(LDLIBS)
+	-$(LD) $(LDFLAGS) -o $(DLLEXPORT-1_EXE) $(DLLEXPORT-1_O) $(DLLEXP-1_DLL) $(LDLIBS)
+
+.PHONY: misc/dllexport-1-dll
+
+misc/dllexport-1-dll: misc/dllexport-1-dll.o
 
 clean :
 	rm -f $(TEST_SRCS:.c=.bak)
